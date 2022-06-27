@@ -1,0 +1,19 @@
+name: Github-actions
+
+on:
+  push:
+    branches: main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Deploy in EC2
+        uses: easingthemes/ssh-deploy@main
+        env:
+            SSH_PRIVATE_KEY: ${{ secrets.NGINX_PRIVATE_KEY  }}
+            REMOTE_HOST : ${{ secrets.HOSTNAME  }}
+            REMOTE_USER : ${{ secrets.USER_NAME  }}
+            SOURCE : "index.html"
+            TARGET : "/var/www/html"
